@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  TRIVY_VERSION: "0.71.2"
+
 jobs:
   security-scan:
     name: IaC + Container Security Scan
@@ -27,25 +30,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Trivy
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: "fs"
-          skip-setup: false
-          scanners: "vuln"
-          format: "table"
-          exit-code: "0" # GuardDeploy's own gate decides pass/fail, not this step
+      - name: Install Trivy (pinned release, checksum-verified)
+        run: |
+          base="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
+          curl -fsSLO "${base}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          curl -fsSLO "${base}/trivy_${TRIVY_VERSION}_checksums.txt"
+          sha256sum --ignore-missing -c "trivy_${TRIVY_VERSION}_checksums.txt"
+          tar -xzf "trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" trivy
+          sudo install -m 0755 trivy /usr/local/bin/trivy
+          trivy --version
 
       - name: Run GuardDeploy scan
         id: guarddeploy
+        env:
+          PROJECT_NAME: "${{ github.repository }} (${{ github.event_name }})"
         run: |
+          set +e
           python -m guarddeploy.cli \
             --terraform-dir ./fixtures/terraform \
             --fs . \
-            --project-name "${{ github.repository }} — PR #${{ github.event.number || 'push' }}" \
+            --project-name "$PROJECT_NAME" \
             --output-dir ./guarddeploy-report \
             --fail-on CRITICAL
-        continue-on-error: true
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          exit 0
 
       - name: Upload evidence report
         if: always()
@@ -54,9 +62,14 @@ jobs:
           name: guarddeploy-evidence-report
           path: guarddeploy-report/
           retention-days: 90
+          if-no-files-found: error
 
       - name: Enforce security gate
-        if: steps.guarddeploy.outcome == 'failure'
+        env:
+          EXIT_CODE: ${{ steps.guarddeploy.outputs.exit_code }}
         run: |
-          echo "::error::GuardDeploy security gate failed — critical findings present. See the guarddeploy-evidence-report artifact."
-          exit 1
+          case "$EXIT_CODE" in
+            0) echo "Security gate passed." ;;
+            1) echo "::error::GuardDeploy security gate failed - blocking findings present. See the guarddeploy-evidence-report artifact."; exit 1 ;;
+            *) echo "::error::GuardDeploy errored (exit code ${EXIT_CODE}) - a tool failure, not a gate decision."; exit 2 ;;
+          esac
