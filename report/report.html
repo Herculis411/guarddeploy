@@ -1,0 +1,2894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GuardDeploy Scan — Security & ISO 27001 Evidence Report</title>
+<style>
+  :root {
+    --navy: #1F3864;
+    --navy-dark: #142544;
+    --accent: #2E75B6;
+    --bg: #F4F6F9;
+    --card: #FFFFFF;
+    --critical: #B00020;
+    --high: #D9822B;
+    --medium: #D4A017;
+    --low: #4C8C4A;
+    --info: #6C7A89;
+    --text: #1A1F29;
+    --muted: #5B6472;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0 0 60px 0;
+  }
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: #fff;
+    padding: 36px 48px;
+  }
+  header h1 { margin: 0 0 6px 0; font-size: 26px; }
+  header p { margin: 0; color: #C9D6E8; font-size: 14px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin: -28px 0 32px 0;
+  }
+  .stat-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 2px 10px rgba(20,37,68,0.12);
+    text-align: center;
+  }
+  .stat-card .value { font-size: 28px; font-weight: 700; color: var(--navy); }
+  .stat-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 4px; }
+  .stat-card.critical .value { color: var(--critical); }
+  section { margin-bottom: 36px; }
+  h2 {
+    color: var(--navy);
+    font-size: 18px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+  .card { background: var(--card); border-radius: 10px; padding: 24px; box-shadow: 0 2px 10px rgba(20,37,68,0.08); }
+  ul.recommendations { padding-left: 20px; margin: 0; }
+  ul.recommendations li { margin-bottom: 10px; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left;
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 12px;
+    position: sticky;
+    top: 0;
+  }
+  td { padding: 10px 12px; border-bottom: 1px solid #E4E9F0; vertical-align: top; }
+  tr:hover td { background: #F0F4FA; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: .03em;
+  }
+  .badge.CRITICAL { background: var(--critical); }
+  .badge.HIGH { background: var(--high); }
+  .badge.MEDIUM { background: var(--medium); color: #3a2c00; }
+  .badge.LOW { background: var(--low); }
+  .badge.INFO, .badge.UNKNOWN { background: var(--info); }
+  .iso-chip {
+    display: inline-block;
+    background: #E8F0FB;
+    color: var(--navy);
+    border: 1px solid #C9D6E8;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11px;
+    margin: 2px 3px 2px 0;
+    font-weight: 600;
+  }
+  .source-tag { font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .tool-errors { background: #FFF6E8; border: 1px solid #F0D9A8; border-radius: 8px; padding: 14px 18px; font-size: 13px; color: #6B4F14; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 40px; }
+  .rationale { color: var(--muted); font-size: 12px; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>GuardDeploy Scan — Security &amp; ISO 27001 Evidence Report</h1>
+  <p>Generated 2026-10-10T16:34:12+00:00 UTC · GuardDeploy automated evidence pipeline</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-grid">
+    <div class="stat-card"><div class="value">166</div><div class="label">Total Checks</div></div>
+    <div class="stat-card"><div class="value">9.0%</div><div class="label">Pass Rate</div></div>
+    <div class="stat-card critical"><div class="value">7</div><div class="label">Critical Findings</div></div>
+    <div class="stat-card"><div class="value">151</div><div class="label">Total Failed</div></div>
+    <div class="stat-card"><div class="value">166</div><div class="label">Findings Evaluated</div></div>
+  </div>
+
+  
+
+  <section>
+    <h2>Executive Summary</h2>
+    <div class="card">
+      <p style="margin-top:0;">
+        This report covers 166 automated security checks across
+        infrastructure-as-code and container scanning, with a
+        9.0% pass rate and 7 critical
+        finding(s) requiring immediate remediation. Every failed check below is mapped
+        to its relevant ISO/IEC 27001:2022 Annex A control for audit evidence purposes.
+      </p>
+      
+      <strong>Top recommendations:</strong>
+      <ul class="recommendations">
+        <li>[CRITICAL] Ensure no security groups allow ingress from 0.0.0.0:0 to port 22 (CKV_AWS_24) — 1 occurrence(s). Remediate to satisfy ISO 27001 A.8.20, A.8.22.</li><li>[CRITICAL] Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389 (CKV_AWS_25) — 1 occurrence(s). Remediate to satisfy ISO 27001 A.8.20, A.8.22.</li><li>[CRITICAL] Ensure all data stored in RDS is not publicly accessible (CKV_AWS_17) — 1 occurrence(s). Remediate to satisfy ISO 27001 A.8.3, A.8.20.</li>
+      </ul>
+      
+    </div>
+  </section>
+
+  <section>
+    <h2>Findings by Severity</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Source</th>
+            <th>Check / CVE</th>
+            <th>Title</th>
+            <th>Resource</th>
+            <th>ISO 27001 Annex A</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_24</td>
+              <td>
+                Ensure no security groups allow ingress from 0.0.0.0:0 to port 22
+                <div class="rationale">Security group allows unrestricted ingress on SSH (port 22) from 0.0.0.0/0.</div>
+              </td>
+              <td>aws_security_group.web</td>
+              <td>
+                
+                  <span class="iso-chip" title="Networks security">A.8.20</span>
+                
+                  <span class="iso-chip" title="Segregation of networks">A.8.22</span>
+                
+                
+                  <div class="rationale">CIS AWS 5.2</div>
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_25</td>
+              <td>
+                Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389
+                <div class="rationale">Security group allows unrestricted ingress on RDP (port 3389) from 0.0.0.0/0.</div>
+              </td>
+              <td>aws_security_group.web</td>
+              <td>
+                
+                  <span class="iso-chip" title="Networks security">A.8.20</span>
+                
+                  <span class="iso-chip" title="Segregation of networks">A.8.22</span>
+                
+                
+                  <div class="rationale">CIS AWS 5.3</div>
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_17</td>
+              <td>
+                Ensure all data stored in RDS is not publicly accessible
+                <div class="rationale">RDS instance is publicly accessible from the internet.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                  <span class="iso-chip" title="Networks security">A.8.20</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_63</td>
+              <td>
+                Ensure no IAM policies documents allow "*" as a statement's actions
+                <div class="rationale">IAM policy grants full administrative privileges ('*' on '*').</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+                  <div class="rationale">CIS AWS 1.16</div>
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_20</td>
+              <td>
+                S3 Bucket has an ACL defined which allows public READ access.
+                <div class="rationale">S3 bucket allows public read access — direct information disclosure risk.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                  <span class="iso-chip" title="Data leakage prevention">A.8.12</span>
+                
+                  <span class="iso-chip" title="Information security for use of cloud services">A.5.23</span>
+                
+                
+                  <div class="rationale">CIS AWS 2.1.5</div>
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-7783</td>
+              <td>
+                form-data: Unsafe random function in form-data
+                <div class="rationale">Critical severity CVE in a deployed container image — active exploit risk.</div>
+              </td>
+              <td>form-data 2.3.3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Secure development life cycle">A.8.25</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge CRITICAL">CRITICAL</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-59873</td>
+              <td>
+                tar: node-tar: Denial of Service via crafted gzip bomb
+                <div class="rationale">Critical severity CVE in a deployed container image — active exploit risk.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Secure development life cycle">A.8.25</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+          
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_16</td>
+              <td>
+                Ensure all data stored in the RDS is securely encrypted at rest
+                <div class="rationale">RDS instance storage is not encrypted at rest.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Use of cryptography">A.8.24</span>
+                
+                  <span class="iso-chip" title="Privacy and protection of personal identifiable information">A.5.34</span>
+                
+                
+                  <div class="rationale">CIS AWS 2.3.1</div>
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_79</td>
+              <td>
+                Ensure Instance Metadata Service Version 1 is not enabled
+                <div class="rationale">EC2 instance permits IMDSv1 — vulnerable to SSRF-based credential theft.</div>
+              </td>
+              <td>aws_instance.app_server</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Secure authentication">A.8.5</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_6</td>
+              <td>
+                Ensure that S3 bucket has a Public Access block
+                <div class="rationale">S3 bucket has no public access block configured.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                  <span class="iso-chip" title="Data leakage prevention">A.8.12</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-5363</td>
+              <td>
+                openssl: Incorrect cipher key and IV length processing
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-6119</td>
+              <td>
+                openssl: Possible denial of service in X.509 name checks
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-15467</td>
+              <td>
+                openssl: OpenSSL: Remote code execution or Denial of Service via oversized Initialization Vector in CMS parsing
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69421</td>
+              <td>
+                openssl: OpenSSL: Denial of Service via malformed PKCS#12 file processing
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-5363</td>
+              <td>
+                openssl: Incorrect cipher key and IV length processing
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-6119</td>
+              <td>
+                openssl: Possible denial of service in X.509 name checks
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-15467</td>
+              <td>
+                openssl: OpenSSL: Remote code execution or Denial of Service via oversized Initialization Vector in CMS parsing
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69421</td>
+              <td>
+                openssl: OpenSSL: Denial of Service via malformed PKCS#12 file processing
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-26519</td>
+              <td>
+                musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write ...
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>musl 1.2.3-r4</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-26519</td>
+              <td>
+                musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write ...
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>musl-utils 1.2.3-r4</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2021-3807</td>
+              <td>
+                nodejs-ansi-regex: Regular expression denial of service (ReDoS) matching ANSI escape codes
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>ansi-regex 3.0.0</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2021-3807</td>
+              <td>
+                nodejs-ansi-regex: Regular expression denial of service (ReDoS) matching ANSI escape codes
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>ansi-regex 4.1.0</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-102276</td>
+              <td>
+                brace-expansion: brace-expansion: Denial of Service via stack exhaustion from crafted brace patterns
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-102278</td>
+              <td>
+                brace-expansion: brace-expansion: Denial of Service via uncontrolled recursion in nested brace patterns
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-13149</td>
+              <td>
+                brace-expansion: Brace-expansion: Denial of Service due to exponential-time complexity
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-14257</td>
+              <td>
+                brace-expansion: Brace-expansion: Denial of Service via memory exhaustion in expand() function
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-69152</td>
+              <td>
+                brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-21538</td>
+              <td>
+                cross-spawn: regular expression denial of service
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>cross-spawn 5.1.0</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-12143</td>
+              <td>
+                form-data: form-data: Form field override via CRLF injection
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>form-data 2.3.3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2022-25881</td>
+              <td>
+                http-cache-semantics: Regular Expression Denial of Service (ReDoS) vulnerability
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>http-cache-semantics 3.8.1</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-93748</td>
+              <td>
+                http-cache-semantics: http-cache-semantics: Information Disclosure via max-stale directive
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>http-cache-semantics 3.8.1</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-29415</td>
+              <td>
+                node-ip: Incomplete fix for CVE-2023-42282
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>ip 1.1.5</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-26996</td>
+              <td>
+                minimatch: minimatch: Denial of Service via specially crafted glob patterns
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>minimatch 3.1.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-26996</td>
+              <td>
+                minimatch: minimatch: Denial of Service via specially crafted glob patterns
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>minimatch 3.1.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-27903</td>
+              <td>
+                minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>minimatch 3.1.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-27903</td>
+              <td>
+                minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>minimatch 3.1.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-27904</td>
+              <td>
+                minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>minimatch 3.1.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-27904</td>
+              <td>
+                minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>minimatch 3.1.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2022-25883</td>
+              <td>
+                nodejs-semver: Regular expression denial of service
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>semver 5.7.1</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-23745</td>
+              <td>
+                node-tar: tar: node-tar: Arbitrary file overwrite and symlink poisoning via unsanitized linkpaths in archives
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-23950</td>
+              <td>
+                node-tar: tar: node-tar: Arbitrary file overwrite via Unicode path collision race condition
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-24842</td>
+              <td>
+                node-tar: tar: node-tar: Arbitrary file creation via path traversal bypass in hardlink security check
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-26960</td>
+              <td>
+                node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-29786</td>
+              <td>
+                node-tar: hardlink path traversal via drive-relative linkpath
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-31802</td>
+              <td>
+                tar: tar: File overwrite via drive-relative symlink traversal
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-59874</td>
+              <td>
+                tar: Node-tar: Denial of Service via malformed tar archive header
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge HIGH">HIGH</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-73566</td>
+              <td>
+                tar: node-tar: Denial of Service via crafted long-path tar archive
+                <div class="rationale">High severity CVE in a deployed container image.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                  <span class="iso-chip" title="Security testing in development and acceptance">A.8.29</span>
+                
+                
+              </td>
+            </tr>
+            
+          
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_382</td>
+              <td>
+                Ensure no security groups allow egress from 0.0.0.0:0 to port -1
+                <div class="rationale">Security group allows unrestricted egress on all ports/protocols to 0.0.0.0/0.</div>
+              </td>
+              <td>aws_security_group.web</td>
+              <td>
+                
+                  <span class="iso-chip" title="Networks security">A.8.20</span>
+                
+                  <span class="iso-chip" title="Segregation of networks">A.8.22</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_129</td>
+              <td>
+                Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled
+                <div class="rationale">RDS instance logging is not enabled for one or more log types.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Logging">A.8.15</span>
+                
+                  <span class="iso-chip" title="Monitoring activities">A.8.16</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_353</td>
+              <td>
+                Ensure that RDS instances have performance insights enabled
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_157</td>
+              <td>
+                Ensure that RDS instances have Multi-AZ enabled
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_226</td>
+              <td>
+                Ensure DB instance gets all minor upgrades automatically
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_293</td>
+              <td>
+                Ensure that AWS database instances have deletion protection enabled
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_161</td>
+              <td>
+                Ensure RDS database has IAM authentication enabled
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_289</td>
+              <td>
+                Ensure IAM policies does not allow permissions management / resource exposure without constraints
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_287</td>
+              <td>
+                Ensure IAM policies does not allow credentials exposure
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_62</td>
+              <td>
+                Ensure IAM policies that allow full "*-*" administrative privileges are not created
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_288</td>
+              <td>
+                Ensure IAM policies does not allow data exfiltration
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_286</td>
+              <td>
+                Ensure IAM policies does not allow privilege escalation
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_290</td>
+              <td>
+                Ensure IAM policies does not allow write access without constraints
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_355</td>
+              <td>
+                Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_135</td>
+              <td>
+                Ensure that EC2 is EBS optimized
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_instance.app_server</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_144</td>
+              <td>
+                Ensure that S3 bucket has cross-region replication enabled
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_61</td>
+              <td>
+                Ensure that an S3 bucket has a lifecycle configuration
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_18</td>
+              <td>
+                Ensure the S3 bucket has access logging enabled
+                <div class="rationale">S3 bucket access logging not enabled — no audit trail of object access.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Logging">A.8.15</span>
+                
+                  <span class="iso-chip" title="Monitoring activities">A.8.16</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_41</td>
+              <td>
+                Ensure an IAM role is attached to EC2 instance
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_instance.app_server</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_62</td>
+              <td>
+                Ensure S3 buckets should have event notifications enabled
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_60</td>
+              <td>
+                Ensure RDS instance with copy tags to snapshots is enabled
+                <div class="rationale">Unmapped Checkov finding — configuration management control applied by default.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_5</td>
+              <td>
+                Ensure that Security Groups are attached to another resource
+                <div class="rationale">Network exposure or segmentation finding.</div>
+              </td>
+              <td>aws_security_group.web</td>
+              <td>
+                
+                  <span class="iso-chip" title="Networks security">A.8.20</span>
+                
+                  <span class="iso-chip" title="Segregation of networks">A.8.22</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_145</td>
+              <td>
+                Ensure that S3 buckets are encrypted with KMS by default
+                <div class="rationale">S3 bucket not encrypted with a customer-managed KMS key.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Use of cryptography">A.8.24</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_40</td>
+              <td>
+                Ensure AWS IAM policy does not allow full IAM privileges
+                <div class="rationale">Identity, access, or privilege finding.</div>
+              </td>
+              <td>aws_iam_policy.admin_everything</td>
+              <td>
+                
+                  <span class="iso-chip" title="Privileged access rights">A.8.2</span>
+                
+                  <span class="iso-chip" title="Information access restriction">A.8.3</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42363</td>
+              <td>
+                busybox: use-after-free in awk
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42364</td>
+              <td>
+                busybox: use-after-free
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42365</td>
+              <td>
+                busybox: use-after-free
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42366</td>
+              <td>
+                busybox: A heap-buffer-overflow
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42363</td>
+              <td>
+                busybox: use-after-free in awk
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox-binsh 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42364</td>
+              <td>
+                busybox: use-after-free
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox-binsh 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42365</td>
+              <td>
+                busybox: use-after-free
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox-binsh 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42366</td>
+              <td>
+                busybox: A heap-buffer-overflow
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>busybox-binsh 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-1255</td>
+              <td>
+                openssl: Input buffer over-read in AES-XTS implementation on 64 bit ARM
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-2650</td>
+              <td>
+                openssl: Possible DoS translating ASN.1 object identifiers
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-2975</td>
+              <td>
+                openssl: AES-SIV cipher implementation contains a bug that causes it to ignore empty associated data entries
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-3446</td>
+              <td>
+                openssl: Excessive time spent checking DH keys and parameters
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-3817</td>
+              <td>
+                OpenSSL: Excessive time spent checking DH q parameter value
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-5678</td>
+              <td>
+                openssl: Generating excessively long X9.42 DH keys or checking excessively long X9.42 DH keys or parameters may be very slow
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-6129</td>
+              <td>
+                openssl: POLY1305 MAC implementation corrupts vector registers on PowerPC
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-0727</td>
+              <td>
+                openssl: denial of service via null dereference
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69419</td>
+              <td>
+                openssl: OpenSSL: Arbitrary code execution due to out-of-bounds write in PKCS#12 processing
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-9230</td>
+              <td>
+                openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-1255</td>
+              <td>
+                openssl: Input buffer over-read in AES-XTS implementation on 64 bit ARM
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-2650</td>
+              <td>
+                openssl: Possible DoS translating ASN.1 object identifiers
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-2975</td>
+              <td>
+                openssl: AES-SIV cipher implementation contains a bug that causes it to ignore empty associated data entries
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-3446</td>
+              <td>
+                openssl: Excessive time spent checking DH keys and parameters
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-3817</td>
+              <td>
+                OpenSSL: Excessive time spent checking DH q parameter value
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-5678</td>
+              <td>
+                openssl: Generating excessively long X9.42 DH keys or checking excessively long X9.42 DH keys or parameters may be very slow
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-6129</td>
+              <td>
+                openssl: POLY1305 MAC implementation corrupts vector registers on PowerPC
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-0727</td>
+              <td>
+                openssl: denial of service via null dereference
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69419</td>
+              <td>
+                openssl: OpenSSL: Arbitrary code execution due to out-of-bounds write in PKCS#12 processing
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-9230</td>
+              <td>
+                openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42363</td>
+              <td>
+                busybox: use-after-free in awk
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>ssl_client 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42364</td>
+              <td>
+                busybox: use-after-free
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>ssl_client 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42365</td>
+              <td>
+                busybox: use-after-free
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>ssl_client 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42366</td>
+              <td>
+                busybox: A heap-buffer-overflow
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>ssl_client 1.35.0-r29</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69873</td>
+              <td>
+                ajv: ReDoS via $data reference
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>ajv 6.12.6</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-102277</td>
+              <td>
+                brace-expansion: brace-expansion: Denial of Service via crafted brace patterns
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-33750</td>
+              <td>
+                brace-expansion: brace-expansion: Denial of Service via zero step value in brace pattern
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-45822</td>
+              <td>
+                decode-uri-component: decode-uri-component: Denial of Service via crafted input
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>decode-uri-component 0.2.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2022-33987</td>
+              <td>
+                nodejs-got: missing verification of requested URLs allows redirects to UNIX sockets
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>got 6.7.1</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-15284</td>
+              <td>
+                qs: qs: Denial of Service via improper input validation in array parsing
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>qs 6.5.3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-82417</td>
+              <td>
+                qs: qs: Denial of Service via improper validation in stringify function
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>qs 6.5.3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-28155</td>
+              <td>
+                request: bypass of SSRF mitigations when following a cross-protocol redirect
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>request 2.88.2</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-28863</td>
+              <td>
+                node-tar: denial of service while parsing a tar file due to lack of folders depth validation
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-53655</td>
+              <td>
+                node-tar: node-tar: File smuggling due to inconsistent tar archive parsing
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-59871</td>
+              <td>
+                node-tar: node-tar: Denial of Service due to incorrect PAX path handling
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-59875</td>
+              <td>
+                node-tar: node-tar: Denial of Service via crafted archive with NUL bytes in metadata
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>tar 4.4.19</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-26136</td>
+              <td>
+                tough-cookie: prototype pollution in cookie memstore
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>tough-cookie 2.5.0</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge MEDIUM">MEDIUM</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-41907</td>
+              <td>
+                uuid: uuid: Out-of-bounds write vulnerability impacts data integrity and confidentiality
+                <div class="rationale">Medium severity CVE — should be remediated within a defined SLA.</div>
+              </td>
+              <td>uuid 3.4.0</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+          
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_23</td>
+              <td>
+                Ensure every security group and rule has a description
+                <div class="rationale">Security group rule has no description — hinders change review and audit.</div>
+              </td>
+              <td>aws_security_group.web</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_118</td>
+              <td>
+                Ensure that enhanced monitoring is enabled for Amazon RDS instances
+                <div class="rationale">Logging or monitoring coverage finding.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Logging">A.8.15</span>
+                
+                  <span class="iso-chip" title="Monitoring activities">A.8.16</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_8</td>
+              <td>
+                Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
+                <div class="rationale">Detailed monitoring not enabled on the instance/launch configuration.</div>
+              </td>
+              <td>aws_instance.app_server</td>
+              <td>
+                
+                  <span class="iso-chip" title="Monitoring activities">A.8.16</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_126</td>
+              <td>
+                Ensure that detailed monitoring is enabled for EC2 instances
+                <div class="rationale">Detailed monitoring not enabled on the EC2 instance.</div>
+              </td>
+              <td>aws_instance.app_server</td>
+              <td>
+                
+                  <span class="iso-chip" title="Monitoring activities">A.8.16</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV_AWS_21</td>
+              <td>
+                Ensure all data stored in the S3 bucket have versioning enabled
+                <div class="rationale">S3 bucket versioning disabled — hampers incident recovery and change tracking.</div>
+              </td>
+              <td>aws_s3_bucket.reports</td>
+              <td>
+                
+                  <span class="iso-chip" title="Configuration management">A.8.9</span>
+                
+                  <span class="iso-chip" title="Information security incident management planning">A.5.24</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">checkov</span></td>
+              <td>CKV2_AWS_30</td>
+              <td>
+                Ensure Postgres RDS as aws_db_instance has Query Logging enabled
+                <div class="rationale">Logging or monitoring coverage finding.</div>
+              </td>
+              <td>aws_db_instance.app_db</td>
+              <td>
+                
+                  <span class="iso-chip" title="Logging">A.8.15</span>
+                
+                  <span class="iso-chip" title="Monitoring activities">A.8.16</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-6237</td>
+              <td>
+                openssl: Excessive time spent checking invalid RSA public keys
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-13176</td>
+              <td>
+                openssl: Timing side-channel in ECDSA signature computation
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-2511</td>
+              <td>
+                openssl: Unbounded memory growth with session handling in TLSv1.3
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-4603</td>
+              <td>
+                openssl: Excessive time spent checking DSA keys and parameters
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-4741</td>
+              <td>
+                openssl: Use After Free with SSL_free_buffers
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-5535</td>
+              <td>
+                openssl: SSL_select_next_proto buffer overread
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-9143</td>
+              <td>
+                openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-68160</td>
+              <td>
+                openssl: OpenSSL: Denial of Service due to out-of-bounds write in BIO filter
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69418</td>
+              <td>
+                openssl: OpenSSL: Information disclosure and data tampering via specific low-level OCB encryption/decryption calls
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69420</td>
+              <td>
+                openssl: OpenSSL: Denial of Service via malformed TimeStamp Response
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-9232</td>
+              <td>
+                openssl: Out-of-bounds read in HTTP client no_proxy handling
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-22795</td>
+              <td>
+                openssl: OpenSSL: Denial of Service due to type confusion in PKCS#12 file processing
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-22796</td>
+              <td>
+                openssl: OpenSSL: Denial of Service via type confusion in PKCS#7 signature verification
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libcrypto3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-6237</td>
+              <td>
+                openssl: Excessive time spent checking invalid RSA public keys
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-13176</td>
+              <td>
+                openssl: Timing side-channel in ECDSA signature computation
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-2511</td>
+              <td>
+                openssl: Unbounded memory growth with session handling in TLSv1.3
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-4603</td>
+              <td>
+                openssl: Excessive time spent checking DSA keys and parameters
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-4741</td>
+              <td>
+                openssl: Use After Free with SSL_free_buffers
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-5535</td>
+              <td>
+                openssl: SSL_select_next_proto buffer overread
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2024-9143</td>
+              <td>
+                openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-68160</td>
+              <td>
+                openssl: OpenSSL: Denial of Service due to out-of-bounds write in BIO filter
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69418</td>
+              <td>
+                openssl: OpenSSL: Information disclosure and data tampering via specific low-level OCB encryption/decryption calls
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-69420</td>
+              <td>
+                openssl: OpenSSL: Denial of Service via malformed TimeStamp Response
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-9232</td>
+              <td>
+                openssl: Out-of-bounds read in HTTP client no_proxy handling
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-22795</td>
+              <td>
+                openssl: OpenSSL: Denial of Service due to type confusion in PKCS#12 file processing
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2026-22796</td>
+              <td>
+                openssl: OpenSSL: Denial of Service via type confusion in PKCS#7 signature verification
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>libssl3 3.0.8-r3</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2025-5889</td>
+              <td>
+                brace-expansion: juliangruber brace-expansion index.js expand redos
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>brace-expansion 1.1.11</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge LOW">LOW</span></td>
+              <td><span class="source-tag">trivy</span></td>
+              <td>CVE-2023-42282</td>
+              <td>
+                nodejs-ip: arbitrary code execution via the isPublic() function
+                <div class="rationale">Low severity CVE — track and remediate opportunistically.</div>
+              </td>
+              <td>ip 1.1.5</td>
+              <td>
+                
+                  <span class="iso-chip" title="Management of technical vulnerabilities">A.8.8</span>
+                
+                
+              </td>
+            </tr>
+            
+          
+            
+          
+            
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    GuardDeploy · automated Cloud DevSecOps compliance evidence · not a substitute for a full ISO 27001 audit
+  </footer>
+
+</div>
+</body>
+</html>

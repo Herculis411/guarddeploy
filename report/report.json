@@ -1,0 +1,3646 @@
+{
+  "project_name": "GuardDeploy Scan",
+  "generated_at": "2026-10-10T16:34:12+00:00",
+  "summary": {
+    "total_checks": 166,
+    "total_failed": 151,
+    "pass_rate_pct": 9.0,
+    "critical_count": 7,
+    "severity_counts": {
+      "CRITICAL": 7,
+      "HIGH": 40,
+      "MEDIUM": 70,
+      "LOW": 34,
+      "INFO": 0,
+      "UNKNOWN": 0
+    },
+    "top_recommendations": [
+      "[CRITICAL] Ensure no security groups allow ingress from 0.0.0.0:0 to port 22 (CKV_AWS_24) \u2014 1 occurrence(s). Remediate to satisfy ISO 27001 A.8.20, A.8.22.",
+      "[CRITICAL] Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389 (CKV_AWS_25) \u2014 1 occurrence(s). Remediate to satisfy ISO 27001 A.8.20, A.8.22.",
+      "[CRITICAL] Ensure all data stored in RDS is not publicly accessible (CKV_AWS_17) \u2014 1 occurrence(s). Remediate to satisfy ISO 27001 A.8.3, A.8.20."
+    ]
+  },
+  "tool_errors": [],
+  "findings": [
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_24",
+      "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+      "severity": "CRITICAL",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          },
+          {
+            "ref": "A.8.22",
+            "title": "Segregation of networks"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 5.2",
+        "rationale": "Security group allows unrestricted ingress on SSH (port 22) from 0.0.0.0/0."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_23",
+      "title": "Ensure every security group and rule has a description",
+      "severity": "LOW",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Security group rule has no description \u2014 hinders change review and audit."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_382",
+      "title": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+      "severity": "MEDIUM",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          },
+          {
+            "ref": "A.8.22",
+            "title": "Segregation of networks"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Security group allows unrestricted egress on all ports/protocols to 0.0.0.0/0."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_25",
+      "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389",
+      "severity": "CRITICAL",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          },
+          {
+            "ref": "A.8.22",
+            "title": "Segregation of networks"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 5.3",
+        "rationale": "Security group allows unrestricted ingress on RDP (port 3389) from 0.0.0.0/0."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_129",
+      "title": "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.15",
+            "title": "Logging"
+          },
+          {
+            "ref": "A.8.16",
+            "title": "Monitoring activities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "RDS instance logging is not enabled for one or more log types."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-that-respective-logs-of-amazon-relational-database-service-amazon-rds-are-enabled"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_17",
+      "title": "Ensure all data stored in RDS is not publicly accessible",
+      "severity": "CRITICAL",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          },
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "RDS instance is publicly accessible from the internet."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-2"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_353",
+      "title": "Ensure that RDS instances have performance insights enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-353"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_157",
+      "title": "Ensure that RDS instances have Multi-AZ enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-73"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_226",
+      "title": "Ensure DB instance gets all minor upgrades automatically",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-db-instance-gets-all-minor-upgrades-automatically"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_293",
+      "title": "Ensure that AWS database instances have deletion protection enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-293"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_118",
+      "title": "Ensure that enhanced monitoring is enabled for Amazon RDS instances",
+      "severity": "LOW",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.15",
+            "title": "Logging"
+          },
+          {
+            "ref": "A.8.16",
+            "title": "Monitoring activities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Logging or monitoring coverage finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-enhanced-monitoring-is-enabled-for-amazon-rds-instances"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_16",
+      "title": "Ensure all data stored in the RDS is securely encrypted at rest",
+      "severity": "HIGH",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.24",
+            "title": "Use of cryptography"
+          },
+          {
+            "ref": "A.5.34",
+            "title": "Privacy and protection of personal identifiable information"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 2.3.1",
+        "rationale": "RDS instance storage is not encrypted at rest."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-4"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_161",
+      "title": "Ensure RDS database has IAM authentication enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-rds-database-has-iam-authentication-enabled"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_289",
+      "title": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_287",
+      "title": "Ensure IAM policies does not allow credentials exposure",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-287"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_62",
+      "title": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_63",
+      "title": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+      "severity": "CRITICAL",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 1.16",
+        "rationale": "IAM policy grants full administrative privileges ('*' on '*')."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-48"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_288",
+      "title": "Ensure IAM policies does not allow data exfiltration",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_286",
+      "title": "Ensure IAM policies does not allow privilege escalation",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_290",
+      "title": "Ensure IAM policies does not allow write access without constraints",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_355",
+      "title": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_8",
+      "title": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted",
+      "severity": "LOW",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.16",
+            "title": "Monitoring activities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Detailed monitoring not enabled on the instance/launch configuration."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_135",
+      "title": "Ensure that EC2 is EBS optimized",
+      "severity": "MEDIUM",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_126",
+      "title": "Ensure that detailed monitoring is enabled for EC2 instances",
+      "severity": "LOW",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.16",
+            "title": "Monitoring activities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Detailed monitoring not enabled on the EC2 instance."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_79",
+      "title": "Ensure Instance Metadata Service Version 1 is not enabled",
+      "severity": "HIGH",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.5",
+            "title": "Secure authentication"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "EC2 instance permits IMDSv1 \u2014 vulnerable to SSRF-based credential theft."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_144",
+      "title": "Ensure that S3 bucket has cross-region replication enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_61",
+      "title": "Ensure that an S3 bucket has a lifecycle configuration",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_18",
+      "title": "Ensure the S3 bucket has access logging enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.15",
+            "title": "Logging"
+          },
+          {
+            "ref": "A.8.16",
+            "title": "Monitoring activities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "S3 bucket access logging not enabled \u2014 no audit trail of object access."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_41",
+      "title": "Ensure an IAM role is attached to EC2 instance",
+      "severity": "MEDIUM",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-an-iam-role-is-attached-to-ec2-instance"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_20",
+      "title": "S3 Bucket has an ACL defined which allows public READ access.",
+      "severity": "CRITICAL",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          },
+          {
+            "ref": "A.8.12",
+            "title": "Data leakage prevention"
+          },
+          {
+            "ref": "A.5.23",
+            "title": "Information security for use of cloud services"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 2.1.5",
+        "rationale": "S3 bucket allows public read access \u2014 direct information disclosure risk."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-1-acl-read-permissions-everyone"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_6",
+      "title": "Ensure that S3 bucket has a Public Access block",
+      "severity": "HIGH",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          },
+          {
+            "ref": "A.8.12",
+            "title": "Data leakage prevention"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "S3 bucket has no public access block configured."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_62",
+      "title": "Ensure S3 buckets should have event notifications enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_21",
+      "title": "Ensure all data stored in the S3 bucket have versioning enabled",
+      "severity": "LOW",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          },
+          {
+            "ref": "A.5.24",
+            "title": "Information security incident management planning"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "S3 bucket versioning disabled \u2014 hampers incident recovery and change tracking."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_60",
+      "title": "Ensure RDS instance with copy tags to snapshots is enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-2-60"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_5",
+      "title": "Ensure that Security Groups are attached to another resource",
+      "severity": "MEDIUM",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          },
+          {
+            "ref": "A.8.22",
+            "title": "Segregation of networks"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Network exposure or segmentation finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-that-security-groups-are-attached-to-ec2-instances-or-elastic-network-interfaces-enis"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_30",
+      "title": "Ensure Postgres RDS as aws_db_instance has Query Logging enabled",
+      "severity": "LOW",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.15",
+            "title": "Logging"
+          },
+          {
+            "ref": "A.8.16",
+            "title": "Monitoring activities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Logging or monitoring coverage finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-postgres-rds-has-query-logging-enabled"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_145",
+      "title": "Ensure that S3 buckets are encrypted with KMS by default",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.24",
+            "title": "Use of cryptography"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "S3 bucket not encrypted with a customer-managed KMS key."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_40",
+      "title": "Ensure AWS IAM policy does not allow full IAM privileges",
+      "severity": "MEDIUM",
+      "resource": "aws_iam_policy.admin_everything",
+      "file_path": "/main.tf",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_41",
+      "title": "Ensure no hard coded AWS access key and secret key exists in provider",
+      "severity": "CRITICAL",
+      "resource": "aws.default",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.5",
+            "title": "Secure authentication"
+          },
+          {
+            "ref": "A.8.12",
+            "title": "Data leakage prevention"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Hardcoded AWS access key / secret detected in source \u2014 credential leakage risk."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-5"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_93",
+      "title": "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_375",
+      "title": "Ensure AWS S3 bucket does not have global view ACL permissions enabled",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket_acl.reports_acl",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-375"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_277",
+      "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1",
+      "severity": "MEDIUM",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          },
+          {
+            "ref": "A.8.22",
+            "title": "Segregation of networks"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Network exposure or segmentation finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_260",
+      "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+      "severity": "HIGH",
+      "resource": "aws_security_group.web",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.20",
+            "title": "Networks security"
+          },
+          {
+            "ref": "A.8.22",
+            "title": "Segregation of networks"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Security group allows unrestricted ingress on HTTP (port 80) from 0.0.0.0/0."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_354",
+      "title": "Ensure RDS Performance Insights are encrypted using KMS CMKs",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.24",
+            "title": "Use of cryptography"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Data-at-rest or in-transit encryption finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-354"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_388",
+      "title": "Ensure AWS Aurora PostgreSQL is not exposed to local file read vulnerability",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": null
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_211",
+      "title": "Ensure RDS uses a modern CaCert",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-rds-uses-a-modern-cacert"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_133",
+      "title": "Ensure that RDS instances has backup policy",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.2",
+            "title": "Privileged access rights"
+          },
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Identity, access, or privilege finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-rds-instances-have-backup-policy"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_88",
+      "title": "EC2 instance should not have public IP.",
+      "severity": "MEDIUM",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_46",
+      "title": "Ensure no hard-coded secrets exist in EC2 user data",
+      "severity": "MEDIUM",
+      "resource": "aws_instance.app_server",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_57",
+      "title": "S3 Bucket has an ACL defined which allows public WRITE access.",
+      "severity": "CRITICAL",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.3",
+            "title": "Information access restriction"
+          },
+          {
+            "ref": "A.8.12",
+            "title": "Data leakage prevention"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 2.1.5",
+        "rationale": "S3 bucket allows public write access \u2014 data integrity and leakage risk."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-2-acl-write-permissions-everyone"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_69",
+      "title": "Ensure AWS RDS database instance configured with encryption in transit",
+      "severity": "MEDIUM",
+      "resource": "aws_db_instance.app_db",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.24",
+            "title": "Use of cryptography"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Data-at-rest or in-transit encryption finding."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-2-69"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV_AWS_19",
+      "title": "Ensure all data stored in the S3 bucket is securely encrypted at rest",
+      "severity": "HIGH",
+      "resource": "aws_s3_bucket.reports",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.24",
+            "title": "Use of cryptography"
+          },
+          {
+            "ref": "A.5.34",
+            "title": "Privacy and protection of personal identifiable information"
+          }
+        ],
+        "cis_aws_ref": "CIS AWS 2.1.1",
+        "rationale": "S3 bucket does not enforce server-side encryption at rest."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-14-data-encrypted-at-rest"
+    },
+    {
+      "source": "checkov",
+      "check_id": "CKV2_AWS_43",
+      "title": "Ensure S3 Bucket does not allow access to all Authenticated users",
+      "severity": "MEDIUM",
+      "resource": "aws_s3_bucket_acl.reports_acl",
+      "file_path": "/main.tf",
+      "passed": true,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.9",
+            "title": "Configuration management"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Unmapped Checkov finding \u2014 configuration management control applied by default."
+      },
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-s3-bucket-does-not-allow-access-to-all-authenticated-users"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42363",
+      "title": "busybox: use-after-free in awk",
+      "severity": "MEDIUM",
+      "resource": "busybox 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42363"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42364",
+      "title": "busybox: use-after-free",
+      "severity": "MEDIUM",
+      "resource": "busybox 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42364"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42365",
+      "title": "busybox: use-after-free",
+      "severity": "MEDIUM",
+      "resource": "busybox 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42365"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42366",
+      "title": "busybox: A heap-buffer-overflow",
+      "severity": "MEDIUM",
+      "resource": "busybox 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42366"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42363",
+      "title": "busybox: use-after-free in awk",
+      "severity": "MEDIUM",
+      "resource": "busybox-binsh 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42363"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42364",
+      "title": "busybox: use-after-free",
+      "severity": "MEDIUM",
+      "resource": "busybox-binsh 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42364"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42365",
+      "title": "busybox: use-after-free",
+      "severity": "MEDIUM",
+      "resource": "busybox-binsh 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42365"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42366",
+      "title": "busybox: A heap-buffer-overflow",
+      "severity": "MEDIUM",
+      "resource": "busybox-binsh 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42366"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-5363",
+      "title": "openssl: Incorrect cipher key and IV length processing",
+      "severity": "HIGH",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-5363"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-6119",
+      "title": "openssl: Possible denial of service in X.509 name checks",
+      "severity": "HIGH",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-6119"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-15467",
+      "title": "openssl: OpenSSL: Remote code execution or Denial of Service via oversized Initialization Vector in CMS parsing",
+      "severity": "HIGH",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-15467"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69421",
+      "title": "openssl: OpenSSL: Denial of Service via malformed PKCS#12 file processing",
+      "severity": "HIGH",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69421"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-1255",
+      "title": "openssl: Input buffer over-read in AES-XTS implementation on 64 bit ARM",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-1255"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-2650",
+      "title": "openssl: Possible DoS translating ASN.1 object identifiers",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-2650"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-2975",
+      "title": "openssl: AES-SIV cipher implementation contains a bug that causes it to ignore empty associated data entries",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-2975"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-3446",
+      "title": "openssl: Excessive time spent checking DH keys and parameters",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-3446"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-3817",
+      "title": "OpenSSL: Excessive time spent checking DH q parameter value",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-3817"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-5678",
+      "title": "openssl: Generating excessively long X9.42 DH keys or checking excessively long X9.42 DH keys or parameters may be very slow",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-5678"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-6129",
+      "title": "openssl: POLY1305 MAC implementation corrupts vector registers on PowerPC",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-6129"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-0727",
+      "title": "openssl: denial of service via null dereference",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-0727"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69419",
+      "title": "openssl: OpenSSL: Arbitrary code execution due to out-of-bounds write in PKCS#12 processing",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69419"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-9230",
+      "title": "openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap",
+      "severity": "MEDIUM",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-9230"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-6237",
+      "title": "openssl: Excessive time spent checking invalid RSA public keys",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-6237"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-13176",
+      "title": "openssl: Timing side-channel in ECDSA signature computation",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-13176"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-2511",
+      "title": "openssl: Unbounded memory growth with session handling in TLSv1.3",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-2511"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-4603",
+      "title": "openssl: Excessive time spent checking DSA keys and parameters",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-4603"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-4741",
+      "title": "openssl: Use After Free with SSL_free_buffers",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-4741"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-5535",
+      "title": "openssl: SSL_select_next_proto buffer overread",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-5535"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-9143",
+      "title": "openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-9143"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-68160",
+      "title": "openssl: OpenSSL: Denial of Service due to out-of-bounds write in BIO filter",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-68160"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69418",
+      "title": "openssl: OpenSSL: Information disclosure and data tampering via specific low-level OCB encryption/decryption calls",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69418"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69420",
+      "title": "openssl: OpenSSL: Denial of Service via malformed TimeStamp Response",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69420"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-9232",
+      "title": "openssl: Out-of-bounds read in HTTP client no_proxy handling",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-9232"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-22795",
+      "title": "openssl: OpenSSL: Denial of Service due to type confusion in PKCS#12 file processing",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-22795"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-22796",
+      "title": "openssl: OpenSSL: Denial of Service via type confusion in PKCS#7 signature verification",
+      "severity": "LOW",
+      "resource": "libcrypto3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-22796"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-5363",
+      "title": "openssl: Incorrect cipher key and IV length processing",
+      "severity": "HIGH",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-5363"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-6119",
+      "title": "openssl: Possible denial of service in X.509 name checks",
+      "severity": "HIGH",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-6119"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-15467",
+      "title": "openssl: OpenSSL: Remote code execution or Denial of Service via oversized Initialization Vector in CMS parsing",
+      "severity": "HIGH",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-15467"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69421",
+      "title": "openssl: OpenSSL: Denial of Service via malformed PKCS#12 file processing",
+      "severity": "HIGH",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69421"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-1255",
+      "title": "openssl: Input buffer over-read in AES-XTS implementation on 64 bit ARM",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-1255"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-2650",
+      "title": "openssl: Possible DoS translating ASN.1 object identifiers",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-2650"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-2975",
+      "title": "openssl: AES-SIV cipher implementation contains a bug that causes it to ignore empty associated data entries",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-2975"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-3446",
+      "title": "openssl: Excessive time spent checking DH keys and parameters",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-3446"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-3817",
+      "title": "OpenSSL: Excessive time spent checking DH q parameter value",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-3817"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-5678",
+      "title": "openssl: Generating excessively long X9.42 DH keys or checking excessively long X9.42 DH keys or parameters may be very slow",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-5678"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-6129",
+      "title": "openssl: POLY1305 MAC implementation corrupts vector registers on PowerPC",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-6129"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-0727",
+      "title": "openssl: denial of service via null dereference",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-0727"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69419",
+      "title": "openssl: OpenSSL: Arbitrary code execution due to out-of-bounds write in PKCS#12 processing",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69419"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-9230",
+      "title": "openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap",
+      "severity": "MEDIUM",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-9230"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-6237",
+      "title": "openssl: Excessive time spent checking invalid RSA public keys",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-6237"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-13176",
+      "title": "openssl: Timing side-channel in ECDSA signature computation",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-13176"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-2511",
+      "title": "openssl: Unbounded memory growth with session handling in TLSv1.3",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-2511"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-4603",
+      "title": "openssl: Excessive time spent checking DSA keys and parameters",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-4603"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-4741",
+      "title": "openssl: Use After Free with SSL_free_buffers",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-4741"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-5535",
+      "title": "openssl: SSL_select_next_proto buffer overread",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-5535"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-9143",
+      "title": "openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-9143"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-68160",
+      "title": "openssl: OpenSSL: Denial of Service due to out-of-bounds write in BIO filter",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-68160"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69418",
+      "title": "openssl: OpenSSL: Information disclosure and data tampering via specific low-level OCB encryption/decryption calls",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69418"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69420",
+      "title": "openssl: OpenSSL: Denial of Service via malformed TimeStamp Response",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69420"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-9232",
+      "title": "openssl: Out-of-bounds read in HTTP client no_proxy handling",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-9232"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-22795",
+      "title": "openssl: OpenSSL: Denial of Service due to type confusion in PKCS#12 file processing",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-22795"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-22796",
+      "title": "openssl: OpenSSL: Denial of Service via type confusion in PKCS#7 signature verification",
+      "severity": "LOW",
+      "resource": "libssl3 3.0.8-r3",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-22796"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-26519",
+      "title": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write ...",
+      "severity": "HIGH",
+      "resource": "musl 1.2.3-r4",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-26519"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-26519",
+      "title": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write ...",
+      "severity": "HIGH",
+      "resource": "musl-utils 1.2.3-r4",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-26519"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42363",
+      "title": "busybox: use-after-free in awk",
+      "severity": "MEDIUM",
+      "resource": "ssl_client 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42363"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42364",
+      "title": "busybox: use-after-free",
+      "severity": "MEDIUM",
+      "resource": "ssl_client 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42364"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42365",
+      "title": "busybox: use-after-free",
+      "severity": "MEDIUM",
+      "resource": "ssl_client 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42365"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42366",
+      "title": "busybox: A heap-buffer-overflow",
+      "severity": "MEDIUM",
+      "resource": "ssl_client 1.35.0-r29",
+      "file_path": "node:14-alpine (alpine 3.17.3)",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42366"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-69873",
+      "title": "ajv: ReDoS via $data reference",
+      "severity": "MEDIUM",
+      "resource": "ajv 6.12.6",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-69873"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2021-3807",
+      "title": "nodejs-ansi-regex: Regular expression denial of service (ReDoS) matching ANSI escape codes",
+      "severity": "HIGH",
+      "resource": "ansi-regex 3.0.0",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2021-3807"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2021-3807",
+      "title": "nodejs-ansi-regex: Regular expression denial of service (ReDoS) matching ANSI escape codes",
+      "severity": "HIGH",
+      "resource": "ansi-regex 4.1.0",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2021-3807"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-102276",
+      "title": "brace-expansion: brace-expansion: Denial of Service via stack exhaustion from crafted brace patterns",
+      "severity": "HIGH",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-102276"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-102278",
+      "title": "brace-expansion: brace-expansion: Denial of Service via uncontrolled recursion in nested brace patterns",
+      "severity": "HIGH",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-102278"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-13149",
+      "title": "brace-expansion: Brace-expansion: Denial of Service due to exponential-time complexity",
+      "severity": "HIGH",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-13149"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-14257",
+      "title": "brace-expansion: Brace-expansion: Denial of Service via memory exhaustion in expand() function",
+      "severity": "HIGH",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-14257"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-69152",
+      "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+      "severity": "HIGH",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-69152"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-102277",
+      "title": "brace-expansion: brace-expansion: Denial of Service via crafted brace patterns",
+      "severity": "MEDIUM",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-102277"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-33750",
+      "title": "brace-expansion: brace-expansion: Denial of Service via zero step value in brace pattern",
+      "severity": "MEDIUM",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-33750"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-5889",
+      "title": "brace-expansion: juliangruber brace-expansion index.js expand redos",
+      "severity": "LOW",
+      "resource": "brace-expansion 1.1.11",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-5889"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-21538",
+      "title": "cross-spawn: regular expression denial of service",
+      "severity": "HIGH",
+      "resource": "cross-spawn 5.1.0",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-21538"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-45822",
+      "title": "decode-uri-component: decode-uri-component: Denial of Service via crafted input",
+      "severity": "MEDIUM",
+      "resource": "decode-uri-component 0.2.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-45822"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-7783",
+      "title": "form-data: Unsafe random function in form-data",
+      "severity": "CRITICAL",
+      "resource": "form-data 2.3.3",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.25",
+            "title": "Secure development life cycle"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Critical severity CVE in a deployed container image \u2014 active exploit risk."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-7783"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-12143",
+      "title": "form-data: form-data: Form field override via CRLF injection",
+      "severity": "HIGH",
+      "resource": "form-data 2.3.3",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-12143"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2022-33987",
+      "title": "nodejs-got: missing verification of requested URLs allows redirects to UNIX sockets",
+      "severity": "MEDIUM",
+      "resource": "got 6.7.1",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2022-33987"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2022-25881",
+      "title": "http-cache-semantics: Regular Expression Denial of Service (ReDoS) vulnerability",
+      "severity": "HIGH",
+      "resource": "http-cache-semantics 3.8.1",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2022-25881"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-93748",
+      "title": "http-cache-semantics: http-cache-semantics: Information Disclosure via max-stale directive",
+      "severity": "HIGH",
+      "resource": "http-cache-semantics 3.8.1",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-93748"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-29415",
+      "title": "node-ip: Incomplete fix for CVE-2023-42282",
+      "severity": "HIGH",
+      "resource": "ip 1.1.5",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-29415"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-42282",
+      "title": "nodejs-ip: arbitrary code execution via the isPublic() function",
+      "severity": "LOW",
+      "resource": "ip 1.1.5",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Low severity CVE \u2014 track and remediate opportunistically."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-42282"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-26996",
+      "title": "minimatch: minimatch: Denial of Service via specially crafted glob patterns",
+      "severity": "HIGH",
+      "resource": "minimatch 3.1.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-26996"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-26996",
+      "title": "minimatch: minimatch: Denial of Service via specially crafted glob patterns",
+      "severity": "HIGH",
+      "resource": "minimatch 3.1.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-26996"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-27903",
+      "title": "minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns",
+      "severity": "HIGH",
+      "resource": "minimatch 3.1.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-27903"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-27903",
+      "title": "minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns",
+      "severity": "HIGH",
+      "resource": "minimatch 3.1.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-27903"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-27904",
+      "title": "minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions",
+      "severity": "HIGH",
+      "resource": "minimatch 3.1.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-27904"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-27904",
+      "title": "minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions",
+      "severity": "HIGH",
+      "resource": "minimatch 3.1.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-27904"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2025-15284",
+      "title": "qs: qs: Denial of Service via improper input validation in array parsing",
+      "severity": "MEDIUM",
+      "resource": "qs 6.5.3",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2025-15284"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-82417",
+      "title": "qs: qs: Denial of Service via improper validation in stringify function",
+      "severity": "MEDIUM",
+      "resource": "qs 6.5.3",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-82417"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-28155",
+      "title": "request: bypass of SSRF mitigations when following a cross-protocol redirect",
+      "severity": "MEDIUM",
+      "resource": "request 2.88.2",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-28155"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2022-25883",
+      "title": "nodejs-semver: Regular expression denial of service",
+      "severity": "HIGH",
+      "resource": "semver 5.7.1",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2022-25883"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-59873",
+      "title": "tar: node-tar: Denial of Service via crafted gzip bomb",
+      "severity": "CRITICAL",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.25",
+            "title": "Secure development life cycle"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Critical severity CVE in a deployed container image \u2014 active exploit risk."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-59873"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-23745",
+      "title": "node-tar: tar: node-tar: Arbitrary file overwrite and symlink poisoning via unsanitized linkpaths in archives",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-23745"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-23950",
+      "title": "node-tar: tar: node-tar: Arbitrary file overwrite via Unicode path collision race condition",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-23950"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-24842",
+      "title": "node-tar: tar: node-tar: Arbitrary file creation via path traversal bypass in hardlink security check",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-24842"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-26960",
+      "title": "node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-26960"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-29786",
+      "title": "node-tar: hardlink path traversal via drive-relative linkpath",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-29786"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-31802",
+      "title": "tar: tar: File overwrite via drive-relative symlink traversal",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-31802"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-59874",
+      "title": "tar: Node-tar: Denial of Service via malformed tar archive header",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-59874"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-73566",
+      "title": "tar: node-tar: Denial of Service via crafted long-path tar archive",
+      "severity": "HIGH",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          },
+          {
+            "ref": "A.8.29",
+            "title": "Security testing in development and acceptance"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "High severity CVE in a deployed container image."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-73566"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2024-28863",
+      "title": "node-tar: denial of service while parsing a tar file due to lack of folders depth validation",
+      "severity": "MEDIUM",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2024-28863"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-53655",
+      "title": "node-tar: node-tar: File smuggling due to inconsistent tar archive parsing",
+      "severity": "MEDIUM",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-53655"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-59871",
+      "title": "node-tar: node-tar: Denial of Service due to incorrect PAX path handling",
+      "severity": "MEDIUM",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-59871"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-59875",
+      "title": "node-tar: node-tar: Denial of Service via crafted archive with NUL bytes in metadata",
+      "severity": "MEDIUM",
+      "resource": "tar 4.4.19",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-59875"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2023-26136",
+      "title": "tough-cookie: prototype pollution in cookie memstore",
+      "severity": "MEDIUM",
+      "resource": "tough-cookie 2.5.0",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2023-26136"
+    },
+    {
+      "source": "trivy",
+      "check_id": "CVE-2026-41907",
+      "title": "uuid: uuid: Out-of-bounds write vulnerability impacts data integrity and confidentiality",
+      "severity": "MEDIUM",
+      "resource": "uuid 3.4.0",
+      "file_path": "Node.js",
+      "passed": false,
+      "control_mapping": {
+        "iso_controls": [
+          {
+            "ref": "A.8.8",
+            "title": "Management of technical vulnerabilities"
+          }
+        ],
+        "cis_aws_ref": null,
+        "rationale": "Medium severity CVE \u2014 should be remediated within a defined SLA."
+      },
+      "guideline": "https://avd.aquasec.com/nvd/cve-2026-41907"
+    }
+  ]
+}
