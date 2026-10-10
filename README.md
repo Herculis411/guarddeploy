@@ -91,6 +91,10 @@ Checkov flags `CKV_AWS_20` (S3 bucket allows public read) on `fixtures/terraform
 
 That row is what goes in front of an auditor or a customer security review, not just "check failed."
 
+## About the red CI badge
+
+The `GuardDeploy Security Gate` workflow is expected to fail on this repository. It scans the deliberately insecure samples in `fixtures/`, so the failure shows the gate working: the build is blocked, and the JSON and HTML evidence reports are still uploaded as a build artifact. A real pipeline would point the same workflow at its own Terraform and images.
+
 ## Mapping coverage (reference scan)
 
 On `fixtures/terraform` plus `node:14-alpine`, GuardDeploy evaluated 166 results: 53 IaC checks (38 failed, 15 passed) and 113 container CVE findings. Of the 38 failed IaC checks, 16 (42%) matched a curated check-specific mapping, 13 (34%) a category mapping inferred from the check title, and 9 (24%) the generic configuration-management default. All 113 container findings use the curated vulnerability mapping.
